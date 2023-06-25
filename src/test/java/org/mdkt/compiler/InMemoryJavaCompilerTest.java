@@ -31,18 +31,49 @@ public class InMemoryJavaCompilerTest {
 	}
 
 	@Test
+	public void compile_WhenTypicalUpdateClass() throws Exception {
+		StringBuffer sourceCode = new StringBuffer();
+
+		sourceCode.append("package org.mdkt.compiler;\n");
+		sourceCode.append("public class HelloClass {\n");
+		sourceCode.append("   public String hello() { return \"hello1\"; }");
+		sourceCode.append("}");
+
+		Class<?> oldClass = HelloClass.class;
+		Class<?> newClass = InMemoryJavaCompiler.newInstance().compile("org.mdkt.compiler.HelloClass", sourceCode.toString());
+
+		Assert.assertNotEquals(oldClass.hashCode() , newClass.hashCode());
+		Assert.assertNotEquals(oldClass.getDeclaredMethod("hello").invoke(oldClass.newInstance()) ,
+				newClass.getDeclaredMethod("hello").invoke(newClass.newInstance()));
+	}
+
+	@Test
 	public void compileAll_WhenTypical() throws Exception {
 		String cls1 = "public class A{ public B b() { return new B(); }}";
 		String cls2 = "public class B{ public String toString() { return \"B!\"; }}";
+		String cls3 = "import org.mdkt.compiler.ShanhyTest; public class C{ public String hello() { return new ShanhyTest().hello(); }}";
 
-		Map<String, Class<?>> compiled = InMemoryJavaCompiler.newInstance().addSource("A", cls1).addSource("B", cls2).compileAll();
+		Map<String, Class<?>> compiled = InMemoryJavaCompiler.newInstance()
+				.addSource("A", cls1)
+//				.addSource("A", cls1)
+//				.addSource("A", cls1)
+				.addSource("B", cls2)
+				.addSource("C", cls3)
+				.compileAll();
 
 		Assert.assertNotNull(compiled.get("A"));
 		Assert.assertNotNull(compiled.get("B"));
+		Assert.assertNotNull(compiled.get("C"));
 
 		Class<?> aClass = compiled.get("A");
 		Object a = aClass.newInstance();
 		Assert.assertEquals("B!", aClass.getMethod("b").invoke(a).toString());
+
+		Class<?> cClass = compiled.get("C");
+		Object c = cClass.newInstance();
+		String helloInvokeResult = cClass.getMethod("hello").invoke(c).toString();
+		System.out.println("helloInvokeResult >>> " + helloInvokeResult);
+		Assert.assertEquals("Hello Shanhy", helloInvokeResult);
 	}
 
 	@Test
