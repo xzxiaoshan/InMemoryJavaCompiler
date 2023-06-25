@@ -11,6 +11,10 @@ public class DynamicClassLoader extends ClassLoader {
 		super(parent);
 	}
 
+	public Map<String, CompiledCode> getCustomCompiledCode(){
+		return this.customCompiledCode;
+	}
+
 	public void addCode(CompiledCode cc) {
 		customCompiledCode.put(cc.getName(), cc);
 	}

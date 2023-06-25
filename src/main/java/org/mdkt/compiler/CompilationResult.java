@@ -6,6 +6,9 @@ import java.util.Map;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
+/**
+ * 编译结果收集类
+ */
 public interface CompilationResult {
     /**
      * Return the compiled classes

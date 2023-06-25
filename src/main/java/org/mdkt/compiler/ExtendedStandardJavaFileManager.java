@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public class ExtendedStandardJavaFileManager extends
 		ForwardingJavaFileManager<JavaFileManager> {
 
-	private Map<String, CompiledCode> compiledCode;
-	private DynamicClassLoader cl;
+	private final Map<String, CompiledCode> compiledCode;
+	private final DynamicClassLoader cl;
 
 	/**
 	 * Creates a new instance of ForwardingJavaFileManager.
