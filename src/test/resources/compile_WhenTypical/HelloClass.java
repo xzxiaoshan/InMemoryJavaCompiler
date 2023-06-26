@@ -6,3 +6,15 @@ public class HelloClass {
       return "show";
    }
 }
+
+class WorldClass{
+
+   private String name;
+
+}
+
+class WorldClass2{
+
+   private String name;
+
+}
