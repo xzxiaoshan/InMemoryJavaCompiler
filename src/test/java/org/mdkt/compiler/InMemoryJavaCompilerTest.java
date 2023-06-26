@@ -104,12 +104,18 @@ public class InMemoryJavaCompilerTest {
     @Test
     public void compile_WhenTypicalUpdateClass() throws Exception {
         Class<?> oldClass = HelloClass.class;
-        Class<?> newClass = InMemoryJavaCompiler.newInstance().compile("org.mdkt.compiler.HelloClass"
-                , getResourceAsString("compile_WhenTypical/HelloClass.java"));
+        Class<?> newClass = InMemoryJavaCompiler.newInstance().compile("org.mdkt.compiler.HelloClass",
+                getResourceAsString("compile_WhenTypical/HelloClass.java"));
 
-        Assert.assertNotEquals(oldClass.hashCode() , newClass.hashCode());
-        Assert.assertNotEquals(oldClass.getDeclaredMethod("hello").invoke(oldClass.getDeclaredConstructor().newInstance()) ,
-                newClass.getDeclaredMethod("hello").invoke(newClass.getDeclaredConstructor().newInstance()));
+        Assert.assertNotEquals(oldClass.hashCode(), newClass.hashCode());
+
+        Object oldClassInvokeResult = oldClass.getDeclaredMethod("hello").invoke(oldClass.getDeclaredConstructor().newInstance());
+        Object newClassInvokeResult = newClass.getDeclaredMethod("hello").invoke(newClass.getDeclaredConstructor().newInstance());
+
+        System.out.println("oldClassInvokeResult = " + oldClassInvokeResult);
+        System.out.println("newClassInvokeResult = " + newClassInvokeResult);
+
+        Assert.assertNotEquals(oldClassInvokeResult, newClassInvokeResult);
     }
 
 }
