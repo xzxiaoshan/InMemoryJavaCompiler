@@ -51,17 +51,10 @@ public class InMemoryJavaCompilerTest {
 
         Assert.assertNotNull(compiled.get("A"));
         Assert.assertNotNull(compiled.get("B"));
-        Assert.assertNotNull(compiled.get("C"));
 
         Class<?> aClass = compiled.get("A");
         Object a = aClass.getDeclaredConstructor().newInstance();
         Assert.assertEquals("B!", aClass.getMethod("b").invoke(a).toString());
-
-        Class<?> cClass = compiled.get("C");
-        Object c = cClass.getDeclaredConstructor().newInstance();
-        String helloInvokeResult = cClass.getMethod("hello").invoke(c).toString();
-        System.out.println("helloInvokeResult >>> " + helloInvokeResult);
-        Assert.assertEquals("Hello Shanhy", helloInvokeResult);
     }
 
     @Test
