@@ -38,6 +38,7 @@ public class InMemoryJavaCompilerTest {
     public void compile_WhenTypical() throws Exception {
         Class<?> helloClass = InMemoryJavaCompiler.newInstance()
                 .compile("org.mdkt.HelloClass", getResourceAsString("compile_WhenTypical/HelloClass.java"));
+
         Assert.assertNotNull(helloClass);
         Assert.assertEquals(1, helloClass.getDeclaredMethods().length);
     }
@@ -98,6 +99,17 @@ public class InMemoryJavaCompilerTest {
             logger.info("Exception caught: {}", e.getMessage());
             throw e;
         }
+    }
+
+    @Test
+    public void compile_WhenTypicalUpdateClass() throws Exception {
+        Class<?> oldClass = HelloClass.class;
+        Class<?> newClass = InMemoryJavaCompiler.newInstance().compile("org.mdkt.compiler.HelloClass"
+                , getResourceAsString("compile_WhenTypical/HelloClass.java"));
+
+        Assert.assertNotEquals(oldClass.hashCode() , newClass.hashCode());
+        Assert.assertNotEquals(oldClass.getDeclaredMethod("hello").invoke(oldClass.getDeclaredConstructor().newInstance()) ,
+                newClass.getDeclaredMethod("hello").invoke(newClass.getDeclaredConstructor().newInstance()));
     }
 
 }
