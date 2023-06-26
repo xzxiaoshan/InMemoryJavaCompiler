@@ -40,7 +40,7 @@ public class InMemoryJavaCompilerTest {
                 .compile("org.mdkt.compiler.HelloClass", getResourceAsString("compile_WhenTypical/HelloClass.java"));
 
         Assert.assertNotNull(helloClass);
-//        Assert.assertEquals(2, helloClass.getDeclaredMethods().length);
+        Assert.assertEquals(2, helloClass.getDeclaredMethods().length);
     }
 
     @Test
